@@ -1,20 +1,18 @@
+// Récupération des éléments DOM
 const gallery = document.getElementById('gallery');
 const filterContainer = document.getElementById('filter-container');
 
-//  l'appel à l'API 
-// Envoie une requête à l'API pour obtenir les données /...
+// Appel à l'API pour obtenir les données des œuvres
 fetch('http://localhost:5678/api/works')
-// Gére la réponse de la requête, la réponse de la requête est convertie en format JSON
-    .then(response => response.json())
-    // Gére les données JSON obtenues, prend une fonction de rappel qui reçoit les données JSON en tant que paramètre, que nous avons nommé data
+    .then(response => response.json()) // Convertit la réponse en format JSON
     .then(data => {
-        // Affichage des données JSON
-        // console.log (data)
-        parcourirTableau(data);
+        console.log (data)
+        parcourirTableau(data); // Appelle la fonction pour afficher les données des œuvres
 })
 
-    function parcourirTableau(data) {
-        data.forEach(works => {
+// Fonction pour parcourir les données des œuvres et les afficher
+function parcourirTableau(data) {
+    data.forEach(works => {
 
         const figureElement = document.createElement('figure');
 
@@ -28,21 +26,21 @@ fetch('http://localhost:5678/api/works')
         figureElement.appendChild(imgElement);
         figureElement.appendChild(figcaptionElement);
 
-        figureElement.dataset.categoryId = works.categoryId;
         gallery.appendChild(figureElement);
+        figureElement.dataset.categoryId = works.categoryId; // Associe l'ID de catégorie à l'attribut data-categoryId de l'élément
     });
 }
 
-//  l'appel à l'API
+// Appel à l'API pour obtenir les données des catégories
 fetch('http://localhost:5678/api/categories')
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        FilterOptions(data);
+        FilterOptions(data); // Appelle la fonction pour créer les options de filtrage
 });
 
+// Fonction pour créer les options de filtrage
 function FilterOptions(categories) {
-
     const optionTous = document.createElement('button');
     optionTous.value = 'tous';
     optionTous.textContent = 'Tous';
@@ -60,12 +58,12 @@ function FilterOptions(categories) {
         console.log (optionElement)
 
         optionElement.addEventListener('click', function () {
-            // Filtrer les images en fonction de la catégorie sélectionnée
             filterImagesCategory(optionElement.value);
         });
     });
 }
 
+// Fonction pour afficher toutes les images ou filtrer par catégorie
 function allImages(categoryId) {
     const allImages = Array.from(document.querySelectorAll('#gallery figure'));
     allImages.forEach(image => {
@@ -82,6 +80,7 @@ function allImages(categoryId) {
     });
 }
 
+// Fonction pour filtrer les images par catégorie
 function filterImagesCategory(categoryId) {
     const allImages = Array.from(document.querySelectorAll('#gallery figure'));
     allImages.forEach(image => {

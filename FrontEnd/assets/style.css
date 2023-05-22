@@ -219,7 +219,6 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin-top: 17.70em;
 	padding: 2em;
 	cursor: default;
 	background-color: white;
@@ -265,5 +264,5 @@ footer nav ul li {
 #login a {
 	text-align: center;
 	color: black;
-	margin: 25px;
+	margin: 25px 25px 19% 25px;
 }

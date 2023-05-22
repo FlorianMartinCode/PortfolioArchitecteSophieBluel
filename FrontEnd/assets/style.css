@@ -90,6 +90,10 @@ nav ul {
 	list-style-type: none;
 
 }
+nav a {
+text-decoration: none;
+color: black;
+}
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
@@ -124,6 +128,29 @@ li:hover {
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
+}
+/* Button */
+#filter-container {
+	margin-bottom: 3em;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+#filter-container button {
+	min-width: 100px;
+	font-family: 'Syne';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	border-radius: 60px;
+	color: #1D6154;
+	height: 37px;
+	border: 1px solid #1D6154;
+}
+#filter-container button:hover{
+    background-color: #1D6154;
+    color: white;
 }
 .gallery {
 	width: 100%;

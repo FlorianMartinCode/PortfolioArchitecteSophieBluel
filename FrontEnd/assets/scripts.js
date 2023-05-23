@@ -1,94 +1,81 @@
-// Récupération des éléments DOM
 const gallery = document.getElementById('gallery');
 const filterContainer = document.getElementById('filter-container');
 
-// Appel à l'API pour obtenir les données des œuvres
-fetch('http://localhost:5678/api/works')
-    .then(response => response.json()) // Convertit la réponse en format JSON
-    .then(data => {
-        console.log (data)
-        parcourirTableau(data); // Appelle la fonction pour afficher les données des œuvres
-})
-
-// Fonction pour parcourir les données des œuvres et les afficher
-function parcourirTableau(data) {
-    data.forEach(works => {
-
+function renderWorks(works, categoryId=null) {
+    gallery.innerHTML = ''
+    works.forEach(work => {
+        if(categoryId != null && categoryId != work.categoryId) {
+            return
+        }
         const figureElement = document.createElement('figure');
 
         const imgElement = document.createElement('img');
-        imgElement.src = works.imageUrl;
-        imgElement.alt = works.title;
+        imgElement.src = work.imageUrl;
+        imgElement.alt = work.title;
 
         const figcaptionElement = document.createElement('figcaption');
-        figcaptionElement.textContent = works.title;
+        figcaptionElement.textContent = work.title;
 
         figureElement.appendChild(imgElement);
         figureElement.appendChild(figcaptionElement);
 
         gallery.appendChild(figureElement);
-        figureElement.dataset.categoryId = works.categoryId; // Associe l'ID de catégorie à l'attribut data-categoryId de l'élément
+        figureElement.dataset.categoryId = work.categoryId;
     });
 }
 
-// Appel à l'API pour obtenir les données des catégories
-fetch('http://localhost:5678/api/categories')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        FilterOptions(data); // Appelle la fonction pour créer les options de filtrage
-});
-
-// Fonction pour créer les options de filtrage
-function FilterOptions(categories) {
+function renderFilters(categories, works) {
     const optionTous = document.createElement('button');
     optionTous.value = 'tous';
     optionTous.textContent = 'Tous';
+    optionTous.classList.add('filter-button');
     filterContainer.appendChild(optionTous);
-    console.log (optionTous)
     optionTous.addEventListener('click', function () {
-        allImages(optionTous.value);
+        setActiveButton(optionTous);
+        renderWorks(works)
     });
   
     categories.forEach(category => {
         const optionElement = document.createElement('button');
         optionElement.value = category.id;
         optionElement.textContent = category.name;
+        optionElement.classList.add('filter-button');
         filterContainer.appendChild(optionElement);
         console.log (optionElement)
 
         optionElement.addEventListener('click', function () {
-            filterImagesCategory(optionElement.value);
+            setActiveButton(optionElement);
+            renderWorks(works, optionElement.value)
         });
     });
 }
 
-// Fonction pour afficher toutes les images ou filtrer par catégorie
-function allImages(categoryId) {
-    const allImages = Array.from(document.querySelectorAll('#gallery figure'));
-    allImages.forEach(image => {
-        if (categoryId === 'tous') {
-            image.style.display = 'block';
-        } else {
-            const imageCategory = image.dataset.categoryId;
-            if (imageCategory === categoryId) {
-                image.style.display = 'block';
-            } else {
-                image.style.display = 'none';
-            }
-        }
+function setActiveButton(button) {
+    const buttons = document.querySelectorAll('.filter-button');
+    buttons.forEach(btn => {
+      if (btn === button) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
     });
+  }
+
+var run = async() => {
+    async function getWorks() {
+        return await fetch('http://localhost:5678/api/works')
+        .then(response => response.json())
+    }
+
+    async function getCategories() {
+        return await fetch('http://localhost:5678/api/categories')
+        .then(response => response.json())
+    }
+    var works = await getWorks()
+    renderWorks(works)
+
+    var categories = await getCategories()
+    renderFilters(categories, works)
 }
 
-// Fonction pour filtrer les images par catégorie
-function filterImagesCategory(categoryId) {
-    const allImages = Array.from(document.querySelectorAll('#gallery figure'));
-    allImages.forEach(image => {
-        const imageCategory = image.dataset.categoryId;
-        if (imageCategory === categoryId || categoryId === 'tous') {
-            image.style.display = 'block';
-        } else {
-            image.style.display = 'none';
-        }
-    });
-}
+run()

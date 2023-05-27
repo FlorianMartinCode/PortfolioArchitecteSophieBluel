@@ -86,7 +86,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px auto;
+	margin: 40px auto 100px auto;
 	max-width: 80%;
 	/* padding: 0 4.5em; */
 }
@@ -170,9 +170,11 @@ li:hover {
 #introduction article {
 	flex: 1;
 	cursor: default;
+	margin-bottom: 60px;
 }
 #introduction h2 {
 	margin-bottom: 1em;
+	margin-top: 1em;
 }
 #introduction p {
 	width: 404px;

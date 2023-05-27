@@ -55,11 +55,40 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
+.edition {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 59px;
+	background-color: black;
+	gap: 20px;
+}
+.edition i {
+	color: white;
+	font-size: 20px;
+}
+.edition p {
+	color: white;
+	font-size: 16px;
+	cursor: default;
+}
+.edition button {
+	width: 216px;
+	height: 38px;
+	font-weight: bold;
+	background-color: white;
+	border-radius: 60px;
+	border: none;
+	cursor: pointer;
+}
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px auto;
-	max-width: 1140px;
+	max-width: 80%;
+	/* padding: 0 4.5em; */
 }
 section {
 	margin: 50px 0
@@ -74,9 +103,11 @@ h1{
 	font-size: 22px;
 	font-weight: 800;
 	color: #B1663C;
-
+	cursor: default;
 }
-
+.login-h1 {
+	cursor: pointer;
+}
 h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
@@ -104,10 +135,16 @@ text-decoration: none;
 color: black;
 }
 nav li {
-	padding: 0 10px;
+	padding: 0 23px;
 	font-size: 1.2em;
 }
-
+.active {
+	font-weight: 600;
+}
+nav li img {
+	width: 20px;
+	height: 20px;
+}
 li:hover {
 	color: #B1663C;
 }
@@ -116,23 +153,49 @@ li:hover {
 	align-items: center;
 }
 #introduction figure {
-	flex: 1
+	flex: 1.5
 }
 #introduction img {
 	display: block;
-	margin: auto;
-	width: 80%;
+	margin: auto auto 15px 0;
+	width: 85%;
 }
-
+#introduction .modif, a {
+	margin: auto;
+    width: 100%;
+	text-decoration: none;
+	color: black;
+	font-size: 15px;
+}
 #introduction article {
-	flex: 1
+	flex: 1;
+	cursor: default;
 }
 #introduction h2 {
 	margin-bottom: 1em;
 }
-
 #introduction p {
-	margin-bottom: 0.5em;
+	width: 404px;
+	margin-bottom: 1.5em;
+	line-height: 16px;
+	font-weight: 400;
+	font-size: 14px;
+	vertical-align: top;
+}
+#portfolio {
+	margin-top: 120px;
+}
+#portfolio .modif-projets {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	/* margin-left: 150px; */
+}
+#portfolio h2 {
+	cursor: default;
+}
+#portfolio .modif {
+	padding: 8px 0 0 48px;
 }
 #portfolio h2 {
 	text-align: center;
@@ -177,11 +240,11 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
-
+	cursor: default;
 }
 #contact h2{
 	margin-bottom: 20px;
@@ -198,7 +261,7 @@ margin: auto;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	cursor: pointer;
+	/* cursor: pointer; */
 }
 #contact label {
 	margin: 2em 0 1em 0;
@@ -207,7 +270,6 @@ margin: auto;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -217,18 +279,20 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
 }
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	padding: 2em;
+	padding: 2em 0;
 	cursor: default;
 	background-color: white;
+	width: 100%;
 }
 
 footer nav ul li {
 	cursor: pointer;
-	margin-right: 50px;
+	margin-right: 9.5%;
 }
 
 /* ------------------------ */
@@ -261,10 +325,11 @@ footer nav ul li {
 	background: #1D6154;
 	border: none;
 	border-radius: 60px;
+	cursor: pointer;
 }
 
 #login a {
 	text-align: center;
 	color: black;
-	margin: 25px 25px 19% 25px;
+	margin: 25px auto 20% auto;
 }

@@ -1,3 +1,4 @@
+let tokenValue = localStorage.token;
 // Fonction pour afficher les œuvres dans la galerie + dans la modale
 function renderWorks(works, categoryId=null) {
   const gallery = document.getElementById('gallery');
@@ -9,7 +10,7 @@ function renderWorks(works, categoryId=null) {
     if (categoryId != null && categoryId != work.categoryId) {
       // Si une catégorie est spécifiée et ne correspond pas à la catégorie de l'œuvre, ignorer l'œuvre
       return;
-    }
+    } 
 
     const figureElement = document.createElement('figure');
     const imgElement = document.createElement('img');
@@ -38,13 +39,29 @@ function renderWorks(works, categoryId=null) {
     figureElement.dataset.categoryId = work.categoryId;
     figureModalElement.dataset.categoryId = work.categoryId;
 
-    trashIcon.addEventListener('click', deleteImage);
+    trashIcon.addEventListener('click', () => deleteWork(work.id));
   });
 }
+
 function deleteImage(event) {
   const figureElement = event.target.closest('figure');
+  const workId = figureElement.dataset.workId;
+
   figureElement.remove();
+
+  deleteWork(workId);
 }
+
+const deleteWork = async (id) => {
+  const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': "application/json",
+      'Authorization': `Bearer ${tokenValue}`
+    }
+  });
+}
+
 // Fonction pour afficher les filtres
 function renderFilters(categories, works) {
 

@@ -1,19 +1,9 @@
-// Récupération de l'élément de la galerie et du conteneur de filtres
-const gallery = document.getElementById('gallery');
-const filterContainer = document.getElementById('filter-container');
-
-// Vérification de la présence du token dans le localStorage
-if (localStorage.getItem('token')) {
-  // Si le token est présent, masquer le conteneur de filtres
-  filterContainer.style.display = 'none';
-} else {
-  // Sinon, afficher le conteneur de filtres
-  filterContainer.style.display = 'flex';
-}
-
-// Fonction pour afficher les œuvres dans la galerie
+// Fonction pour afficher les œuvres dans la galerie + dans la modale
 function renderWorks(works, categoryId=null) {
+  const gallery = document.getElementById('gallery');
+  const galleryModalElement = document.getElementById('gallery-modal');
   gallery.innerHTML = '';
+  galleryModalElement.innerHTML = '';
 
   works.forEach(work => {
     if (categoryId != null && categoryId != work.categoryId) {
@@ -21,42 +11,54 @@ function renderWorks(works, categoryId=null) {
       return;
     }
 
-    // Création des éléments HTML pour chaque œuvre
     const figureElement = document.createElement('figure');
     const imgElement = document.createElement('img');
     const figcaptionElement = document.createElement('figcaption');
+    const spanModalDelete = document.createElement('span');
+    const trashIcon = document.createElement('i');
 
-    // Attribution des attributs et du contenu aux éléments
     imgElement.src = work.imageUrl;
     imgElement.alt = work.title;
     figcaptionElement.textContent = work.title;
 
-    // Ajout des éléments à la structure de la galerie
     figureElement.appendChild(imgElement);
     figureElement.appendChild(figcaptionElement);
     gallery.appendChild(figureElement);
 
-    // Attribution de l'ID de catégorie à l'élément de la figure
+    const figureModalElement = figureElement.cloneNode(true);
+    const figcaptionModalElement = figureModalElement.querySelector('figcaption');
+    figcaptionModalElement.textContent = 'éditer';
+
+
+    trashIcon.classList.add('fas', 'fa-trash');
+    spanModalDelete.appendChild(trashIcon);
+    figureModalElement.appendChild(spanModalDelete);
+    galleryModalElement.appendChild(figureModalElement);
+
     figureElement.dataset.categoryId = work.categoryId;
+    figureModalElement.dataset.categoryId = work.categoryId;
+
+    trashIcon.addEventListener('click', deleteImage);
   });
 }
-
+function deleteImage(event) {
+  const figureElement = event.target.closest('figure');
+  figureElement.remove();
+}
 // Fonction pour afficher les filtres
 function renderFilters(categories, works) {
-  // Création du bouton "Tous"
+
   const optionTous = document.createElement('button');
   optionTous.value = 'tous';
   optionTous.textContent = 'Tous';
   optionTous.classList.add('filter-button');
   filterContainer.appendChild(optionTous);
 
-  // Gestion de l'événement du bouton "Tous"
   optionTous.addEventListener('click', function () {
     setActiveButton(optionTous);
     renderWorks(works);
   });
 
-  // Création des boutons pour chaque catégorie
   categories.forEach(category => {
     const optionElement = document.createElement('button');
     optionElement.value = category.id;
@@ -64,7 +66,6 @@ function renderFilters(categories, works) {
     optionElement.classList.add('filter-button');
     filterContainer.appendChild(optionElement);
 
-    // Gestion de l'événement de chaque bouton de catégorie
     optionElement.addEventListener('click', function () {
       setActiveButton(optionElement);
       renderWorks(works, optionElement.value);
@@ -98,7 +99,7 @@ async function getCategories() {
 
 // Fonction principale asynchrone pour exécuter les opérations
 var run = async() => {
-  // Récupération des œuvres et affichage initial
+  // Récupération des œuvres et affichage
   var works = await getWorks();
   renderWorks(works);
 
@@ -109,7 +110,6 @@ var run = async() => {
 
 run();
 
-// Gestion de l'élément de connexion/déconnexion
 const loginElement = document.getElementById('logout');
 if (localStorage.getItem('token')) {
   loginElement.textContent = 'logout';
@@ -124,7 +124,6 @@ loginElement.addEventListener('click', () => {
   }
 });
 
-// Gestion de l'affichage de la section d'édition
 const editionDiv = document.querySelector('.edition');
 if (localStorage.getItem('token')) {
   editionDiv.style.display = 'flex';
@@ -132,7 +131,13 @@ if (localStorage.getItem('token')) {
   editionDiv.style.display = 'none';
 }
 
-// Gestion de l'affichage des éléments de modification
+const filterContainer = document.getElementById('filter-container');
+if (localStorage.getItem('token')) {
+  filterContainer.style.display = 'none';
+} else {
+  filterContainer.style.display = 'flex';
+}
+
 const modifDivs = document.querySelectorAll('.modif');
 if (localStorage.getItem('token')) {
   modifDivs.forEach(div => {
@@ -143,3 +148,44 @@ if (localStorage.getItem('token')) {
     div.style.display = 'none';
   });
 }
+
+// Modal
+let modal = null
+
+const openModal = function (e) {
+  e.preventDefault()
+  const target = document.querySelector(e.target.getAttribute('href'))
+  target.style.display = null
+  target.removeAttribute('aria-hidden')
+  target.setAttribute('aria-modal', 'true')
+  modal = target
+  modal.addEventListener('click',closeModal)
+  modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+  modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+}
+
+const closeModal = function (e) {
+  if (modal === null) return
+  e.preventDefault()
+  modal.style.display = "none"
+  modal.setAttribute('aria-hidden', 'true')
+  modal.removeAttribute('aria-modal')
+  modal.removeEventListener('click',closeModal)
+  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
+  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
+  modal = null
+}
+
+const stopPropagation = function (e) {
+  e.stopPropagation()
+}
+
+document.querySelectorAll('.js-modal').forEach(a => {
+  a.addEventListener('click', openModal)
+})
+
+window.addEventListener('keydown', function (e) {
+  if (e.key === "Escape" || e.key === "Esc") {
+    closeModal(e)
+  }
+})

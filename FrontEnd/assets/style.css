@@ -2,7 +2,9 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+* {
+	box-sizing: border-box;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -160,17 +162,13 @@ li:hover {
 	margin: auto auto 15px 0;
 	width: 85%;
 }
-#introduction .modif, a {
-	margin: auto;
-    width: 100%;
-	text-decoration: none;
-	color: black;
-	font-size: 15px;
-}
 #introduction article {
 	flex: 1;
 	cursor: default;
 	margin-bottom: 60px;
+}
+#introduction a {
+	cursor: pointer;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -191,18 +189,20 @@ li:hover {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	/* margin-left: 150px; */
 }
 #portfolio h2 {
 	cursor: default;
+	text-align: center;
+	margin-bottom: 1em;
 }
 #portfolio .modif {
 	padding: 8px 0 0 48px;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
+#portfolio a {
+	cursor: pointer;
+	text-decoration: none;
 }
+
 /* Button */
 #filter-container {
 	margin-bottom: 3em;
@@ -239,6 +239,8 @@ li:hover {
 }
 .gallery img {
 	width: 100%;
+	height: 480px;
+	margin-bottom: 5px;
 }
 #contact {
 	width: 50%;
@@ -263,7 +265,6 @@ li:hover {
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	/* cursor: pointer; */
 }
 #contact label {
 	margin: 2em 0 1em 0;
@@ -314,7 +315,7 @@ footer nav ul li {
 #login input {
 	width: 380px;
 	height: 50px;
-	margin: 10px auto 30px auto;
+	margin: 10px auto 10px auto;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
 }
@@ -333,5 +334,119 @@ footer nav ul li {
 #login a {
 	text-align: center;
 	color: black;
-	margin: 25px auto 20% auto;
+	margin: 25px auto 25% auto;
 }
+
+/* ------------------------ */
+/* Modal */
+.js-modal {
+	color: black;
+}
+.modal {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+	overflow: auto;
+	width: 760px;
+	max-width: clac(100vw - 20px);
+	height: 820px;
+	max-height: clac(100vh - 20px);
+	padding: 30px;
+	background-color: white;
+	border-radius: 10px;
+}
+.js-modal-close {
+	width: 100%;
+	display: flex;
+	justify-content: end;
+	border: none;
+	background-color: white;
+}
+.js-modal-close i {
+	cursor: pointer;
+}
+.title-modal {
+	text-align: center;
+	font-size: 26px;
+	margin-top: 20px;
+}
+.gallery-modal {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 8px;
+	grid-row-gap: 12px;
+	padding: 50px 100px;
+}
+.gallery-modal figure {
+	position: relative;
+}
+.gallery-modal img {
+	width: 100%;
+	height: 127px;
+}
+.gallery-modal figcaption {
+	cursor: pointer;
+}
+.gallery-modal i {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: black;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	color: white;
+	border-radius: 2px;
+	cursor: pointer;
+}
+.modal-content hr {
+	width: 73%;
+}
+.ajt-photo {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 25px;
+	margin-top: 40px;
+}
+.modal-content a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 237px;
+	height: 35px;
+	background: #1D6154;
+	color: white;
+	border-radius: 60px;
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 14px;
+}
+.modal-content p {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	color: #D65353;
+	cursor: pointer;
+}
+  
+.delete-icon {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: red;
+  }

@@ -12,7 +12,6 @@ document.getElementById('btnConnexion').addEventListener('click', function(event
     password: password
   };
 
-  // Envoi de la requête de connexion vers l'API
   fetch('http://localhost:5678/api/users/login', {
     method: 'POST',
     headers: {
@@ -32,7 +31,13 @@ document.getElementById('btnConnexion').addEventListener('click', function(event
       // Redirection vers la page d'accueil
       window.location.href = './index.html';
     } else {
-      alert('Erreur de connexion : Réponse invalide');
+      const errorContainer = document.getElementById('error-container');
+      const error = document.createElement('p');
+		  error.innerText = 'email ou mot de passe incorrect';
+		  error.style.textAlign = 'center';
+		  error.style.color = 'red';
+		  error.style.marginBottom = '35px';
+      errorContainer.appendChild(error)
     }
   })
   .catch(error => {

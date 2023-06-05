@@ -43,15 +43,6 @@ function renderWorks(works, categoryId=null) {
   });
 }
 
-function deleteImage(event) {
-  const figureElement = event.target.closest('figure');
-  const workId = figureElement.dataset.workId;
-
-  figureElement.remove();
-
-  deleteWork(workId);
-}
-
 const deleteWork = async (id) => {
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
     method: 'DELETE',

@@ -377,6 +377,7 @@ footer nav ul li {
 	text-align: center;
 	font-size: 26px;
 	margin-top: 20px;
+	cursor: default;
 }
 .gallery-modal {
 	width: 100%;
@@ -394,7 +395,7 @@ footer nav ul li {
 	height: 127px;
 }
 .gallery-modal figcaption {
-	cursor: pointer;
+	/* cursor: pointer; */
 }
 .gallery-modal i {
 	display: flex;

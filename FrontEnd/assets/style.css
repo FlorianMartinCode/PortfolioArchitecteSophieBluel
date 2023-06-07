@@ -363,6 +363,20 @@ footer nav ul li {
 	background-color: white;
 	border-radius: 10px;
 }
+.retourandclose {
+	display: flex;
+	justify-content: space-between;
+}
+.js-modal-retour {
+	width: 100%;
+	display: flex;
+	justify-content: start;
+	border: none;
+	background-color: white;
+}
+.js-modal-retour i {
+	cursor: pointer;
+}
 .js-modal-close {
 	width: 100%;
 	display: flex;

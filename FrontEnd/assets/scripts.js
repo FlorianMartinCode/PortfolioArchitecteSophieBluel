@@ -39,7 +39,7 @@ function renderWorks(works, categoryId=null) {
     figureElement.dataset.categoryId = work.categoryId;
     figureModalElement.dataset.categoryId = work.categoryId;
 
-    trashIcon.addEventListener('click', () => deleteWork(work.id));
+    trashIcon.addEventListener('click', (e) => {e.preventDefault();deleteWork(work.id)});
   });
 }
 
@@ -51,7 +51,14 @@ const deleteWork = async (id) => {
       'Authorization': `Bearer ${tokenValue}`
     }
   });
-}
+
+  if (response.ok) {
+    const works = await getWorks(); // Récupérer à nouveau la liste des œuvres après la suppression
+    renderWorks(works); // Actualiser la galerie des œuvres
+  } else {
+    console.log('Erreur lors de la suppression du travail');
+  }
+};
 
 // Fonction pour afficher les filtres
 function renderFilters(categories, works) {
@@ -158,30 +165,62 @@ if (localStorage.getItem('token')) {
 }
 
 // Modal
-let modal = null
+let modal = null;
 
 const openModal = function (e) {
-  e.preventDefault()
-  const target = document.querySelector(e.target.getAttribute('href'))
-  target.style.display = null
-  target.removeAttribute('aria-hidden')
-  target.setAttribute('aria-modal', 'true')
-  modal = target
-  modal.addEventListener('click',closeModal)
-  modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
-  modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
-}
+  e.preventDefault();
+  modal = document.querySelector(e.target.getAttribute('href'));
+  modal.style.display = null;
+  modal.removeAttribute('aria-hidden');
+  modal.setAttribute('aria-modal', 'true');
+  modal.addEventListener('click', closeModal);
+  modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+};
+
+const openAddModal = function (e) {
+  e.preventDefault();
+  const addModal = document.getElementById('add-modal');
+  const galleryModal = document.getElementById('modal');
+  galleryModal.style.display = 'none';
+  addModal.style.display = null;
+  addModal.removeAttribute('aria-hidden');
+  addModal.setAttribute('aria-modal', 'true');
+  modal = addModal;
+  modal.addEventListener('click', closeModal);
+  modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
+};
+
+document.querySelector('.ajt-photo a').addEventListener('click', openAddModal);
+
+const retourModal = function (e) {
+  e.preventDefault();
+  const addModal = document.getElementById('add-modal');
+  const galleryModal = document.getElementById('modal');
+  galleryModal.style.display = null;
+  addModal.style.display = 'none';
+  addModal.setAttribute('aria-hidden', 'true');
+  addModal.removeAttribute('aria-modal');
+  modal = galleryModal; // Rétablir la valeur de la variable 'modal' à la modal de la galerie
+  modal.removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
+};
+
+const retourButton = document.querySelector('.js-modal-retour');
+retourButton.addEventListener('click', retourModal);
 
 const closeModal = function (e) {
-  if (modal === null) return
-  e.preventDefault()
-  modal.style.display = "none"
-  modal.setAttribute('aria-hidden', 'true')
-  modal.removeAttribute('aria-modal')
-  modal.removeEventListener('click',closeModal)
-  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
-  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
-  modal = null
+  if (modal === null) return;
+  e.preventDefault();
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  modal.removeAttribute('aria-modal');
+  modal.removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
+  modal = null;
 }
 
 const stopPropagation = function (e) {

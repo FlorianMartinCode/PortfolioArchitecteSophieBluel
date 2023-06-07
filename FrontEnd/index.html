@@ -54,14 +54,33 @@
 				
 				<aside id="modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
 					<div class="modal-content js-modal-stop">
-						<button class="js-modal-close"><i class="fa-solid fa-x"></i></i></button>
+						<button class="js-modal-close"><i class="fa-solid fa-x"></i></button>
 						<h3 id="title-modal" class="title-modal">Galerie photo</h3>
 						<div id="gallery-modal" class="gallery-modal"></div>
 						<hr></hr>
 						<div class="ajt-photo">
-							<a href="">Ajouter une photo</a>
+							<a href="#add-modal">Ajouter une photo</a>
 							<p>Supprimer la galerie</p>
 						</div>
+					</div>
+				</aside>
+
+				<aside id="add-modal" class="modal" aria-hidden="true" role="dialog" style="display: none;">
+					<div class="modal-content js-modal-stop">
+						<div class="retourandclose">
+							<button class="js-modal-retour"><i class="fa-solid fa-arrow-left left"></i></button>
+							<button class="js-modal-close"><i class="fa-solid fa-x"></i></button>
+						</div>
+						<h3 class="title-modal">Ajout photo</h3>
+						<form action="">
+							<img src="" alt="">
+							<label for="titre">Titre</label>
+							<input type="text" name="titre" id="titre">
+                            <label for="categorie">Catégorie</label>
+                            <select name="categorie" id="categorie"></select>
+							<hr></hr>
+							<button type="submit" class="valid">Valider</button>
+						</form>
 					</div>
 				</aside>
 			</div>

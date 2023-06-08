@@ -355,7 +355,7 @@ footer nav ul li {
 }
 .modal-content {
 	overflow: auto;
-	width: 760px;
+	width: 730px;
 	max-width: clac(100vw - 20px);
 	height: 820px;
 	max-height: clac(100vh - 20px);
@@ -425,7 +425,7 @@ footer nav ul li {
 	border-radius: 2px;
 	cursor: pointer;
 }
-.modal-content hr {
+hr {
 	width: 73%;
 }
 .ajt-photo {
@@ -435,7 +435,7 @@ footer nav ul li {
 	align-items: center;
 	justify-content: center;
 	gap: 25px;
-	margin-top: 40px;
+	margin-top: 35px;
 }
 .modal-content a {
 	display: flex;
@@ -464,4 +464,90 @@ footer nav ul li {
 	top: 10px;
 	right: 10px;
 	color: red;
-  }
+}
+
+
+.modal-content-add {
+	overflow: auto;
+	width: 730px;
+	max-width: clac(100vw - 20px);
+	height: 780px;
+	max-height: clac(100vh - 20px);
+	padding: 30px;
+	background-color: white;
+	border-radius: 10px;
+}
+.add-img {
+	width: 500px;
+	min-height: 169px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	background-color: #E8F1F7;
+	margin: 50px auto;
+	align-items: center;
+}
+.icon-image {
+	font-size: 75px;
+	margin: auto;
+	color: #B9C5CC;
+	padding: 25px 0;
+}
+.add-img button {
+	width: 173px;
+	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	border-radius: 50px;
+	background: #CBD6DC;
+	margin-bottom: 13px;
+	cursor: pointer;
+	color: #306685;
+	font-weight: bold;
+}
+.add-img p {
+	color: black;
+	text-align: center;
+	width: 100%;
+	margin-bottom: 25px;
+	cursor: default;
+}
+.add-img-form {
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+	margin: auto;
+}
+.add-img-form label {
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 13px;
+}
+.add-img-form input {
+	margin-bottom: 34px;
+	height: 51px;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border: none;
+}
+.add-img-form select {
+	margin-bottom: 50px;
+	height: 51px;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border: none;
+	cursor: pointer;
+}
+.valid {
+	margin: 35px auto auto;
+	width: 237px;
+	height: 36px;
+	border-radius: 60px;
+	background-color: #A7A7A7;
+	border: none;
+	color: white;
+	display: flex;
+	justify-content: center;
+	/* text-align: center; */
+	align-items: center;
+}

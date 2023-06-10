@@ -1,6 +1,7 @@
 let tokenValue = localStorage.token;
+
 // Fonction pour afficher les œuvres dans la galerie + dans la modale
-function renderWorks(works, categoryId=null) {
+function renderWorks(works, categoryId = null) {
   const gallery = document.getElementById('gallery');
   const galleryModalElement = document.getElementById('gallery-modal');
   gallery.innerHTML = '';
@@ -10,7 +11,7 @@ function renderWorks(works, categoryId=null) {
     if (categoryId != null && categoryId != work.categoryId) {
       // Si une catégorie est spécifiée et ne correspond pas à la catégorie de l'œuvre, ignorer l'œuvre
       return;
-    } 
+    }
 
     const figureElement = document.createElement('figure');
     const imgElement = document.createElement('img');
@@ -30,7 +31,6 @@ function renderWorks(works, categoryId=null) {
     const figcaptionModalElement = figureModalElement.querySelector('figcaption');
     figcaptionModalElement.textContent = 'éditer';
 
-
     trashIcon.classList.add('fas', 'fa-trash');
     spanModalDelete.appendChild(trashIcon);
     figureModalElement.appendChild(spanModalDelete);
@@ -39,7 +39,7 @@ function renderWorks(works, categoryId=null) {
     figureElement.dataset.categoryId = work.categoryId;
     figureModalElement.dataset.categoryId = work.categoryId;
 
-    trashIcon.addEventListener('click', (e) => {e.preventDefault();deleteWork(work.id)});
+    trashIcon.addEventListener('click', (e) => {e.preventDefault(); deleteWork(work.id)});
   });
 }
 
@@ -47,7 +47,7 @@ const deleteWork = async (id) => {
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': "application/json",
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${tokenValue}`
     }
   });
@@ -59,6 +59,21 @@ const deleteWork = async (id) => {
     console.log('Erreur lors de la suppression du travail');
   }
 };
+
+const deleteGallery = async () => {
+  const works = await getWorks(); // Récupérer la liste des œuvres
+
+  // Supprimer chaque image individuellement
+  for (const work of works) {
+    await deleteWork(work.id);
+  }
+
+  // Actualiser la galerie des œuvres après la suppression
+  const updatedWorks = await getWorks();
+  renderWorks(updatedWorks);
+};
+
+document.getElementById('delete-gallery').addEventListener('click', deleteGallery);
 
 // Fonction pour afficher les filtres
 function renderFilters(categories, works) {
@@ -223,13 +238,13 @@ const closeModal = function (e) {
   modal = null;
 }
 
-const stopPropagation = function (e) {
-  e.stopPropagation()
-}
-
 document.querySelectorAll('.js-modal').forEach(a => {
   a.addEventListener('click', openModal)
 })
+
+const stopPropagation = function (e) {
+  e.stopPropagation()
+}
 
 window.addEventListener('keydown', function (e) {
   if (e.key === "Escape" || e.key === "Esc") {

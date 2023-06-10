@@ -60,7 +60,7 @@
 						<hr></hr>
 						<div class="ajt-photo">
 							<a href="#add-modal">Ajouter une photo</a>
-							<p>Supprimer la galerie</p>
+							<p id="delete-gallery">Supprimer la galerie</p>
 						</div>
 					</div>
 				</aside>
@@ -72,19 +72,20 @@
 							<button class="js-modal-close"><i class="fa-solid fa-x"></i></button>
 						</div>
 						<h3 class="title-modal">Ajout photo</h3>
+						<div class="add-img">
+							<i class="fa-regular fa-image icon-image"></i>
+							<button>+ Ajouter photo</button>
+							<p>jpg, png : 4 Mo max</p>
+						</div>
+						
 						<form action="">
-							<div class="add-img">
-								<i class="fa-regular fa-image icon-image"></i>
-								<button>+ Ajouter photo</button>
-								<p>jpg. png : 4mo max</p>
-							</div>
 							<div class="add-img-form">
 								<label for="titre">Titre</label>
 								<input type="text" name="titre" id="titre">
-                            	<label for="categorie">Catégorie</label>
-                            	<select name="categorie" id="categorie"></select>
+								<label for="categorie">Catégorie</label>
+								<select name="categorie" id="categorie"></select>
 							</div>
-							<hr></hr>
+							<hr>
 							<button type="submit" class="valid">Valider</button>
 						</form>
 					</div>

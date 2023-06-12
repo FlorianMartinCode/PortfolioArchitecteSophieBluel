@@ -274,6 +274,10 @@ const closeModal = function (e) {
 function resetForm() {
   const form = document.getElementById('add-form');
   form.reset();
+
+  // Réinitialise la sélection de la catégorie
+  const selectElement = document.getElementById('choix');
+  selectElement.value = 'vide';
 }
 
 // Gestionnaire d'événement pour le chargement de la page

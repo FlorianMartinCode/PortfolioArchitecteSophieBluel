@@ -368,9 +368,6 @@ footer nav ul li {
 	justify-content: space-between;
 }
 .js-modal-retour {
-	width: 100%;
-	display: flex;
-	justify-content: start;
 	border: none;
 	background-color: white;
 }
@@ -378,9 +375,7 @@ footer nav ul li {
 	cursor: pointer;
 }
 .js-modal-close {
-	width: 100%;
-	display: flex;
-	justify-content: end;
+	float: right;
 	border: none;
 	background-color: white;
 }
@@ -470,14 +465,16 @@ hr {
 .modal-content-add {
 	overflow: auto;
 	width: 730px;
-	max-width: clac(100vw - 20px);
+	max-width: calc(100vw - 20px);
 	height: 780px;
-	max-height: clac(100vh - 20px);
+	max-height: calc(100vh - 20px);
 	padding: 30px;
 	background-color: white;
 	border-radius: 10px;
 }
+  
 .add-img {
+	position: relative;
 	width: 500px;
 	min-height: 169px;
 	display: flex;
@@ -487,13 +484,15 @@ hr {
 	margin: 50px auto;
 	align-items: center;
 }
+  
 .icon-image {
 	font-size: 75px;
 	margin: auto;
 	color: #B9C5CC;
 	padding: 25px 0;
 }
-.add-img button {
+  
+.add-img label {
 	width: 173px;
 	height: 36px;
 	display: flex;
@@ -507,6 +506,7 @@ hr {
 	color: #306685;
 	font-weight: bold;
 }
+  
 .add-img p {
 	color: black;
 	text-align: center;
@@ -514,23 +514,27 @@ hr {
 	margin-bottom: 25px;
 	cursor: default;
 }
+  
 .add-img-form {
 	display: flex;
 	flex-direction: column;
 	width: 500px;
 	margin: auto;
 }
+  
 .add-img-form label {
 	font-size: 14px;
 	font-weight: bold;
 	margin-bottom: 13px;
 }
+  
 .add-img-form input {
 	margin-bottom: 34px;
 	height: 51px;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 	border: none;
 }
+  
 .add-img-form select {
 	margin-bottom: 50px;
 	height: 51px;
@@ -538,6 +542,20 @@ hr {
 	border: none;
 	cursor: pointer;
 }
+  
+.photo-preview {
+	width: 190px;
+	height: 212.93px;
+}
+  
+.photo-preview img {
+	object-fit: cover;
+}
+  
+.hidden {
+	display: none; /* Ajout de la classe hidden pour masquer les éléments */
+}
+
 .valid {
 	margin: 35px auto auto;
 	width: 237px;
@@ -548,6 +566,5 @@ hr {
 	color: white;
 	display: flex;
 	justify-content: center;
-	/* text-align: center; */
 	align-items: center;
 }

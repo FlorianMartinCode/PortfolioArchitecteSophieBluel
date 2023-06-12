@@ -1,6 +1,5 @@
-let tokenValue = localStorage.token;
+let tokenValue = localStorage.token; // Récupère la valeur du token depuis le localStorage
 
-// Fonction pour afficher les œuvres dans la galerie + dans la modale
 function renderWorks(works, categoryId = null) {
   const gallery = document.getElementById('gallery');
   const galleryModalElement = document.getElementById('gallery-modal');
@@ -9,10 +8,10 @@ function renderWorks(works, categoryId = null) {
 
   works.forEach(work => {
     if (categoryId != null && categoryId != work.categoryId) {
-      // Si une catégorie est spécifiée et ne correspond pas à la catégorie de l'œuvre, ignorer l'œuvre
       return;
     }
 
+    // Crée les éléments HTML nécessaires pour afficher les œuvres
     const figureElement = document.createElement('figure');
     const imgElement = document.createElement('img');
     const figcaptionElement = document.createElement('figcaption');
@@ -27,6 +26,7 @@ function renderWorks(works, categoryId = null) {
     figureElement.appendChild(figcaptionElement);
     gallery.appendChild(figureElement);
 
+    // Crée les éléments HTML pour la galerie modale avec l'option de suppression
     const figureModalElement = figureElement.cloneNode(true);
     const figcaptionModalElement = figureModalElement.querySelector('figcaption');
     figcaptionModalElement.textContent = 'éditer';
@@ -39,45 +39,45 @@ function renderWorks(works, categoryId = null) {
     figureElement.dataset.categoryId = work.categoryId;
     figureModalElement.dataset.categoryId = work.categoryId;
 
+    // Ajoute un gestionnaire d'événement pour supprimer une œuvre au clic sur l'icône de corbeille
     trashIcon.addEventListener('click', (e) => {e.preventDefault(); deleteWork(work.id)});
   });
 }
 
+// Fonction pour supprimer une œuvre en utilisant une requête DELETE
 const deleteWork = async (id) => {
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${tokenValue}`
+      'Authorization': `Bearer ${tokenValue}` // Utilise la valeur du token dans l'en-tête de la requête
     }
   });
 
   if (response.ok) {
-    const works = await getWorks(); // Récupérer à nouveau la liste des œuvres après la suppression
-    renderWorks(works); // Actualiser la galerie des œuvres
+    const works = await getWorks();
+    renderWorks(works);
   } else {
     console.log('Erreur lors de la suppression du travail');
   }
 };
 
+// Fonction pour supprimer l'ensemble de la galerie
 const deleteGallery = async () => {
-  const works = await getWorks(); // Récupérer la liste des œuvres
+  const works = await getWorks();
 
-  // Supprimer chaque image individuellement
   for (const work of works) {
     await deleteWork(work.id);
   }
 
-  // Actualiser la galerie des œuvres après la suppression
   const updatedWorks = await getWorks();
   renderWorks(updatedWorks);
 };
 
 document.getElementById('delete-gallery').addEventListener('click', deleteGallery);
 
-// Fonction pour afficher les filtres
+// Fonction pour afficher les filtres de catégories
 function renderFilters(categories, works) {
-
   const optionTous = document.createElement('button');
   optionTous.value = 'tous';
   optionTous.textContent = 'Tous';
@@ -103,7 +103,7 @@ function renderFilters(categories, works) {
   });
 }
 
-// Fonction pour activer le bouton sélectionné
+// Fonction pour activer le bouton de filtre sélectionné
 function setActiveButton(button) {
   const buttons = document.querySelectorAll('.filter-button');
   buttons.forEach(btn => {
@@ -115,31 +115,30 @@ function setActiveButton(button) {
   });
 }
 
-// Fonction asynchrone pour récupérer les œuvres depuis l'API
+// Fonction pour récupérer les œuvres à partir de l'API
 async function getWorks() {
   return await fetch('http://localhost:5678/api/works')
     .then(response => response.json());
 }
 
-// Fonction asynchrone pour récupérer les catégories depuis l'API
+// Fonction pour récupérer les catégories à partir de l'API
 async function getCategories() {
   return await fetch('http://localhost:5678/api/categories')
     .then(response => response.json());
 }
 
-// Fonction principale asynchrone pour exécuter les opérations
+// Fonction principale pour exécuter les opérations au chargement de la page
 var run = async() => {
-  // Récupération des œuvres et affichage
   var works = await getWorks();
   renderWorks(works);
 
-  // Récupération des catégories et affichage des filtres
   var categories = await getCategories();
   renderFilters(categories, works);
 }
 
 run();
 
+// Modifie login en logout
 const loginElement = document.getElementById('logout');
 if (localStorage.getItem('token')) {
   loginElement.textContent = 'logout';
@@ -147,6 +146,7 @@ if (localStorage.getItem('token')) {
   loginElement.textContent = 'login';
 }
 
+// Gestionnaire d'événement pour le clic sur le bouton de connexion/déconnexion
 loginElement.addEventListener('click', () => {
   if (localStorage.getItem('token')) {
     localStorage.removeItem('token');
@@ -154,6 +154,7 @@ loginElement.addEventListener('click', () => {
   }
 });
 
+// Affiche ou masque les éléments d'édition en fonction de la présence du token
 const editionDiv = document.querySelector('.edition');
 if (localStorage.getItem('token')) {
   editionDiv.style.display = 'flex';
@@ -161,6 +162,7 @@ if (localStorage.getItem('token')) {
   editionDiv.style.display = 'none';
 }
 
+// Affiche ou masque le conteneur de filtres en fonction de la présence du token
 const filterContainer = document.getElementById('filter-container');
 if (localStorage.getItem('token')) {
   filterContainer.style.display = 'none';
@@ -168,6 +170,7 @@ if (localStorage.getItem('token')) {
   filterContainer.style.display = 'flex';
 }
 
+// Affiche ou masque les éléments de modification en fonction de la présence du token
 const modifDivs = document.querySelectorAll('.modif');
 if (localStorage.getItem('token')) {
   modifDivs.forEach(div => {
@@ -179,9 +182,10 @@ if (localStorage.getItem('token')) {
   });
 }
 
-// Modal
+// Code pour les fonctionnalités modales
 let modal = null;
 
+// Fonction pour ouvrir la modale au clic sur un lien
 const openModal = function (e) {
   e.preventDefault();
   modal = document.querySelector(e.target.getAttribute('href'));
@@ -193,6 +197,7 @@ const openModal = function (e) {
   modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 };
 
+// Fonction pour ouvrir la modale d'ajout d'image
 const openAddModal = function (e) {
   e.preventDefault();
   const addModal = document.getElementById('add-modal');
@@ -207,28 +212,54 @@ const openAddModal = function (e) {
   modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 };
 
+// Gestionnaire d'événement pour le clic sur le lien d'ajout d'image
 document.querySelector('.ajt-photo a').addEventListener('click', openAddModal);
 
+// Fonction pour revenir à la modale principale depuis la modale d'ajout d'image
 const retourModal = function (e) {
   e.preventDefault();
-  const addModal = document.getElementById('add-modal');
   const galleryModal = document.getElementById('modal');
+  const addImgContainer = document.querySelector('.add-img');
+
+  const imagePreview = addImgContainer.querySelector('img.photo-preview');
+  if (imagePreview) {
+    addImgContainer.removeChild(imagePreview);
+  }
+
+  const elementsToShow = addImgContainer.querySelectorAll('i, label, p');
+  elementsToShow.forEach(element => {
+    element.style.display = null;
+  });
+
   galleryModal.style.display = null;
   addModal.style.display = 'none';
   addModal.setAttribute('aria-hidden', 'true');
   addModal.removeAttribute('aria-modal');
-  modal = galleryModal; // Rétablir la valeur de la variable 'modal' à la modal de la galerie
+  modal = galleryModal;
   modal.removeEventListener('click', closeModal);
-  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
-  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
+  resetForm();
 };
 
+// Gestionnaire d'événement pour le clic sur le bouton "Retour" dans la modale d'ajout d'image
 const retourButton = document.querySelector('.js-modal-retour');
 retourButton.addEventListener('click', retourModal);
 
+// Fonction pour fermer la modale
 const closeModal = function (e) {
   if (modal === null) return;
   e.preventDefault();
+  const addImgContainer = document.querySelector('.add-img');
+
+  const imagePreview = addImgContainer.querySelector('img.photo-preview');
+  if (imagePreview) {
+    addImgContainer.removeChild(imagePreview);
+  }
+
+  const elementsToShow = addImgContainer.querySelectorAll('i, label, p');
+  elementsToShow.forEach(element => {
+    element.style.display = null;
+  });
+
   modal.style.display = 'none';
   modal.setAttribute('aria-hidden', 'true');
   modal.removeAttribute('aria-modal');
@@ -236,18 +267,51 @@ const closeModal = function (e) {
   modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
   modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
   modal = null;
+  resetForm();
+};
+
+// Fonction pour réinitialiser le formulaire d'ajout d'image
+function resetForm() {
+  const form = document.getElementById('add-form');
+  form.reset();
 }
 
+// Gestionnaire d'événement pour le chargement de la page
+window.addEventListener('load', function() {
+  addModal = document.getElementById('add-modal');
+});
+
+// Gestionnaire d'événement pour ouvrir la modale au clic sur les liens
 document.querySelectorAll('.js-modal').forEach(a => {
   a.addEventListener('click', openModal)
-})
+});
 
+// Fonction pour arrêter la propagation de l'événement
 const stopPropagation = function (e) {
-  e.stopPropagation()
-}
+  e.stopPropagation();
+};
 
+// Gestionnaire d'événement pour la touche Escape pour fermer la modale
 window.addEventListener('keydown', function (e) {
   if (e.key === "Escape" || e.key === "Esc") {
-    closeModal(e)
+    closeModal(e);
   }
-})
+});
+
+// Gestionnaire d'événement pour la sélection d'un fichier dans le formulaire d'ajout d'image
+const addImgContainer = document.querySelector('.add-img');
+const photoFileInput = document.getElementById('photo-file');
+
+photoFileInput.addEventListener('change', (e) => {
+  const selectedFile = e.target.files[0];
+
+  const elementsToHide = addImgContainer.querySelectorAll('i, label, p');
+  elementsToHide.forEach(element => {
+    element.style.display = 'none';
+  });
+
+  const imagePreview = document.createElement('img');
+  imagePreview.classList.add('photo-preview');
+  imagePreview.src = URL.createObjectURL(selectedFile);
+  addImgContainer.appendChild(imagePreview);
+});

@@ -319,3 +319,63 @@ photoFileInput.addEventListener('change', (e) => {
   imagePreview.src = URL.createObjectURL(selectedFile);
   addImgContainer.appendChild(imagePreview);
 });
+
+// Appele la fonction handleSubmit() lorsque le bouton "Valider" est cliqué
+document.getElementById("add-form").addEventListener("submit", function (e) {
+  e.preventDefault(); 
+  handleSubmit();
+});
+
+function handleSubmit() {
+
+  // Récupérer les valeurs des champs du formulaire
+  var titre = document.getElementById("titre").value;
+  var categorie = document.getElementById("choix").value;
+  var photoFile = document.getElementById("photo-file").files[0];
+
+  // Vérifier si les champs sont remplis
+  if (titre && categorie && photoFile && categorie !== "vide") {
+    // Champs remplis, le bouton devient vert
+    document.querySelector("#submit-button").style.backgroundColor = "#1D6154";
+    document.querySelector("#submit-button").style.cursor = "pointer";
+
+    // Créer un objet FormData pour envoyer les données du formulaire
+    var formData = new FormData();
+    formData.append("title", titre);
+    formData.append("category", categorie);
+    formData.append("image", photoFile);
+
+    // Récupérer le jeton d'authentification
+    var token = tokenValue;
+
+    // Ajouter l'en-tête d'authentification à la requête
+    var headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
+
+    // Effectuer la requête POST avec les données du formulaire et l'en-tête d'authentification
+    fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      body: formData,
+      headers: headers
+    })
+      .then(response => {
+        if (response.status === 201) {
+          // La requête a été traitée avec succès
+          console.log("Nouvelle œuvre envoyée avec succès !");
+          return response.json(); // Récupérer les données renvoyées par le serveur
+        } else {
+          // Gérer les erreurs de la requête
+          console.error("Erreur lors de l'envoi de l'œuvre. Statut de la réponse :", response.status);
+        }
+      })
+      .then(newWork => {
+        // Ajouter la nouvelle œuvre à la liste des œuvres existantes
+        works.push(newWork);
+        // Afficher les œuvres mises à jour dans la galerie
+        renderWorks(works);
+      })
+  } else {
+    // Champs non remplis, empêcher l'envoi du formulaire
+    e.preventDefault();
+  }
+}

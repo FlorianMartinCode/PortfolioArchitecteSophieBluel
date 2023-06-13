@@ -1,4 +1,5 @@
 let tokenValue = localStorage.token; // Récupère la valeur du token depuis le localStorage
+let works = []; // Déclaration et initialisation de la variable "works"
 
 function renderWorks(works, categoryId = null) {
   const gallery = document.getElementById('gallery');
@@ -118,7 +119,12 @@ function setActiveButton(button) {
 // Fonction pour récupérer les œuvres à partir de l'API
 async function getWorks() {
   return await fetch('http://localhost:5678/api/works')
-    .then(response => response.json());
+  .then(response => response.json())
+  .then(data => {
+    works = data; // Met à jour les œuvres récupérées dans la variable "works"
+    renderWorks(works); // Appelle la fonction pour afficher les œuvres
+    return data; // Retourne les données récupérées
+  });
 }
 
 // Fonction pour récupérer les catégories à partir de l'API
@@ -245,9 +251,10 @@ const retourButton = document.querySelector('.js-modal-retour');
 retourButton.addEventListener('click', retourModal);
 
 // Fonction pour fermer la modale
-const closeModal = function (e) {
-  if (modal === null) return;
-  e.preventDefault();
+function closeModal(event) {
+  if (event) {
+    event.preventDefault();
+  }
   const addImgContainer = document.querySelector('.add-img');
 
   const imagePreview = addImgContainer.querySelector('img.photo-preview');
@@ -322,60 +329,88 @@ photoFileInput.addEventListener('change', (e) => {
 
 // Appele la fonction handleSubmit() lorsque le bouton "Valider" est cliqué
 document.getElementById("add-form").addEventListener("submit", function (e) {
-  e.preventDefault(); 
+  e.preventDefault();
   handleSubmit();
 });
 
 function handleSubmit() {
-
   // Récupérer les valeurs des champs du formulaire
   var titre = document.getElementById("titre").value;
   var categorie = document.getElementById("choix").value;
   var photoFile = document.getElementById("photo-file").files[0];
 
   // Vérifier si les champs sont remplis
-  if (titre && categorie && photoFile && categorie !== "vide") {
-    // Champs remplis, le bouton devient vert
-    document.querySelector("#submit-button").style.backgroundColor = "#1D6154";
-    document.querySelector("#submit-button").style.cursor = "pointer";
 
-    // Créer un objet FormData pour envoyer les données du formulaire
-    var formData = new FormData();
-    formData.append("title", titre);
-    formData.append("category", categorie);
-    formData.append("image", photoFile);
+  // Créer un objet FormData pour envoyer les données du formulaire
+  var formData = new FormData();
+  formData.append("title", titre);
+  formData.append("category", categorie);
+  formData.append("image", photoFile);
 
-    // Récupérer le jeton d'authentification
-    var token = tokenValue;
+  // Récupérer le jeton d'authentification
+  var token = tokenValue;
 
-    // Ajouter l'en-tête d'authentification à la requête
-    var headers = new Headers();
-    headers.append("Authorization", "Bearer " + token);
+  // Ajouter l'en-tête d'authentification à la requête
+  var headers = new Headers();
+  headers.append("Authorization", "Bearer " + token);
 
-    // Effectuer la requête POST avec les données du formulaire et l'en-tête d'authentification
-    fetch("http://localhost:5678/api/works", {
-      method: "POST",
-      body: formData,
-      headers: headers
+  // Effectuer la requête POST avec les données du formulaire et l'en-tête d'authentification
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    body: formData,
+    headers: headers,
+  })
+    .then(function (response) {
+      if (response.status === 201) {
+        // La requête a été traitée avec succès
+        console.log("Nouvelle œuvre envoyée avec succès !");
+        return response.json(); // Récupérer les données renvoyées par le serveur
+      } else {
+        // Gérer les erreurs de la requête
+        console.error(
+          "Erreur lors de l'envoi de l'œuvre. Statut de la réponse :",
+          response.status
+        );
+      }
     })
-      .then(response => {
-        if (response.status === 201) {
-          // La requête a été traitée avec succès
-          console.log("Nouvelle œuvre envoyée avec succès !");
-          return response.json(); // Récupérer les données renvoyées par le serveur
-        } else {
-          // Gérer les erreurs de la requête
-          console.error("Erreur lors de l'envoi de l'œuvre. Statut de la réponse :", response.status);
-        }
-      })
-      .then(newWork => {
-        // Ajouter la nouvelle œuvre à la liste des œuvres existantes
-        works.push(newWork);
-        // Afficher les œuvres mises à jour dans la galerie
-        renderWorks(works);
-      })
+    .then(function (newWork) {
+      // Ajouter la nouvelle œuvre à la liste des œuvres existantes
+      works.push(newWork);
+      // Afficher les œuvres mises à jour dans la galerie
+      renderWorks(works);
+
+      closeModal(); // Ferme la modale d'ajout d'image
+
+      const galleryModal = document.getElementById("modal");
+      galleryModal.style.display = null; // Ouvre la modale principale
+    });
+}
+
+document.getElementById("titre").addEventListener("keyup", function () {
+  checkForm();
+});
+document.getElementById("choix").addEventListener("change", function () {
+  checkForm();
+});
+document.getElementById("photo-file").addEventListener("change", function () {
+  checkForm();
+});
+
+function checkForm() {
+  var titre = document.getElementById("titre").value;
+  var choix = document.getElementById("choix").value;
+  var photoFile = document.getElementById("photo-file").files[0];
+  var submitButton = document.querySelector("#submit-button");
+
+  if (titre && choix && photoFile && choix !== "vide") {
+    // Champs remplis, le bouton est activé
+    submitButton.disabled = false;
+    submitButton.style.backgroundColor = "#1D6154";
+    submitButton.style.cursor = "pointer";
   } else {
-    // Champs non remplis, empêcher l'envoi du formulaire
-    e.preventDefault();
+    // Au moins un champ est vide, le bouton est désactivé
+    submitButton.disabled = true;
+    submitButton.style.backgroundColor = "#A7A7A7";
+    submitButton.style.cursor = "not-allowed";
   }
 }

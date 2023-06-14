@@ -82,7 +82,7 @@ function renderFilters(categories, works) {
   const optionTous = document.createElement('button');
   optionTous.value = 'tous';
   optionTous.textContent = 'Tous';
-  optionTous.classList.add('filter-button');
+  optionTous.classList.add('filter-button', 'active');
   filterContainer.appendChild(optionTous);
 
   optionTous.addEventListener('click', function () {

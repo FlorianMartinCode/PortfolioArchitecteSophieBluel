@@ -392,6 +392,11 @@ function handleSubmit() {
 
       const galleryModal = document.getElementById("modal");
       galleryModal.style.display = null; // Ouvre la modale principale
+
+      // Réinitialiser l'état du bouton "Valider" à gris
+      var submitButton = document.querySelector("#submit-button");
+      submitButton.disabled = true;
+      submitButton.classList.remove("button-active");
     });
 }
 
@@ -417,16 +422,14 @@ function checkForm() {
       if (isImageValid(photoFile)) {
         // Champs remplis, taille du fichier respectée et extension valide, le bouton est activé
         submitButton.disabled = false;
-        submitButton.style.backgroundColor = "#1D6154";
-        submitButton.style.cursor = "pointer";
+        submitButton.classList.add("button-active");
 
         // Masquer le message d'erreur
         errorMessage.style.display = "none";
       } else {
         // Extension de l'image non valide, le bouton est désactivé
         submitButton.disabled = true;
-        submitButton.style.backgroundColor = "#A7A7A7";
-        submitButton.style.cursor = "not-allowed";
+        submitButton.classList.remove("button-active");
 
         // Afficher le message d'erreur
         errorMessage.textContent = "L'image n'est pas au format JPG ou PNG.";
@@ -435,8 +438,7 @@ function checkForm() {
     } else {
       // La taille du fichier dépasse 4 Mo, le bouton est désactivé
       submitButton.disabled = true;
-      submitButton.style.backgroundColor = "#A7A7A7";
-      submitButton.style.cursor = "not-allowed";
+      submitButton.classList.remove("button-active");
 
       // Afficher le message d'erreur
       errorMessage.textContent = "La taille de l'image dépasse 4 Mo.";
@@ -445,8 +447,7 @@ function checkForm() {
   } else {
     // Au moins un champ est vide, le bouton est désactivé
     submitButton.disabled = true;
-    submitButton.style.backgroundColor = "#A7A7A7";
-    submitButton.style.cursor = "not-allowed";
+    submitButton.classList.remove("button-active");
 
     // Masquer le message d'erreur
     errorMessage.style.display = "none";

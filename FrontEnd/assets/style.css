@@ -577,3 +577,7 @@ hr {
 	align-items: center;
 	cursor: not-allowed;
 }
+.button-active {
+	background-color: #1D6154;
+	cursor: pointer;
+  }

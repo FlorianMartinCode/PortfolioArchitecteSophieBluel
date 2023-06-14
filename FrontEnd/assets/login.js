@@ -1,3 +1,14 @@
+function showPassword() {
+  const passwordField = document.getElementById('password');
+  const showPasswordCheckbox = document.getElementById('showMdp');
+
+  if (showPasswordCheckbox.checked) {
+    passwordField.type = 'text';
+  } else {
+    passwordField.type = 'password';
+  }
+}
+
 // Gestion de l'événement du bouton de connexion
 document.getElementById('btnConnexion').addEventListener('click', function(event) {
   event.preventDefault();

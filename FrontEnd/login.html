@@ -24,17 +24,22 @@
 </header>
 <main>
     <section id="login">
-        <h2>Log In</h2>
-        <form>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email">
-            <label for="passeword">Mot de passe</label>
-            <input type="password" name="mot de passe" id="password"></input><br>
-			<div id="error-container"></div>
-			<button type="submit" class="connexion" id="btnConnexion">Se connecter</button>
-            <a href="#">Mot de passe oublié</a>
-        </form>   
-    </section>
+		<h2>Log In</h2>
+		<form>
+		  <label for="email">Email</label>
+		  <input type="email" name="email" id="email">
+		  <label for="password">Mot de passe</label>
+		  <input type="password" name="mot de passe" id="password"></input><br>
+		  <div class="showMdp">
+			<input type="checkbox" id="showMdp" onclick="showPassword()">
+			<label for="showMdp">Afficher mot de passe</label>
+		  </div>
+		  <div id="error-container"></div>
+		  <button type="submit" class="connexion" id="btnConnexion">Se connecter</button>
+		  <a href="#">Mot de passe oublié</a>
+		</form>
+	  </section>
+	  
 </main>
 <footer>
 	<nav>

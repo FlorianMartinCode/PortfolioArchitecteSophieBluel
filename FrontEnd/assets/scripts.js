@@ -412,30 +412,42 @@ function checkForm() {
   var submitButton = document.querySelector("#submit-button");
   var errorMessage = document.getElementById("error-message");
 
-  if (titre && choix && photoFile && choix !== "vide" && photoFile.size <= 4 * 1024 * 1024) {
-    if (isImageValid(photoFile)) {
-      // Champs remplis, taille du fichier respectée et extension valide, le bouton est activé
-      submitButton.disabled = false;
-      submitButton.style.backgroundColor = "#1D6154";
-      submitButton.style.cursor = "pointer";
-      
-      // Masquer le message d'erreur
-      errorMessage.style.display = "none";
+  if (titre && choix && photoFile && choix !== "vide") {
+    if (photoFile.size <= 4 * 1024 * 1024) {
+      if (isImageValid(photoFile)) {
+        // Champs remplis, taille du fichier respectée et extension valide, le bouton est activé
+        submitButton.disabled = false;
+        submitButton.style.backgroundColor = "#1D6154";
+        submitButton.style.cursor = "pointer";
+
+        // Masquer le message d'erreur
+        errorMessage.style.display = "none";
+      } else {
+        // Extension de l'image non valide, le bouton est désactivé
+        submitButton.disabled = true;
+        submitButton.style.backgroundColor = "#A7A7A7";
+        submitButton.style.cursor = "not-allowed";
+
+        // Afficher le message d'erreur
+        errorMessage.textContent = "L'image n'est pas au format JPG ou PNG.";
+        errorMessage.style.display = "block";
+      }
     } else {
-      // Extension de l'image non valide, le bouton est désactivé
+      // La taille du fichier dépasse 4 Mo, le bouton est désactivé
       submitButton.disabled = true;
-      submitButton.style.backgroundColor = "#808080";
+      submitButton.style.backgroundColor = "#A7A7A7";
       submitButton.style.cursor = "not-allowed";
-      
+
       // Afficher le message d'erreur
+      errorMessage.textContent = "La taille de l'image dépasse 4 Mo.";
       errorMessage.style.display = "block";
     }
   } else {
-    // Au moins un champ est vide, la taille du fichier dépasse 4 Mo, ou l'extension de l'image n'est pas valide, le bouton est désactivé
+    // Au moins un champ est vide, le bouton est désactivé
     submitButton.disabled = true;
     submitButton.style.backgroundColor = "#A7A7A7";
     submitButton.style.cursor = "not-allowed";
-    
+
     // Masquer le message d'erreur
     errorMessage.style.display = "none";
   }

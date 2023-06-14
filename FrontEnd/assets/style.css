@@ -485,7 +485,7 @@ hr {
 	justify-content: center;
 	flex-direction: column;
 	background-color: #E8F1F7;
-	margin: 50px auto;
+	margin: 50px auto 10px auto;
 	align-items: center;
 }
   
@@ -519,6 +519,7 @@ hr {
 	cursor: default;
 }
 .paragraph-error {
+	text-align: center;
 	margin: 15px 0 10px 0;
 }
   
@@ -526,7 +527,7 @@ hr {
 	display: flex;
 	flex-direction: column;
 	width: 500px;
-	margin: auto;
+	margin: 30px auto 0 auto;
 }
   
 .add-img-form label {

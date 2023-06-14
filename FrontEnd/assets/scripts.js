@@ -190,6 +190,7 @@ if (localStorage.getItem('token')) {
 
 // Code pour les fonctionnalités modales
 let modal = null;
+let addModal;
 
 // Fonction pour ouvrir la modale au clic sur un lien
 const openModal = function (e) {
@@ -255,6 +256,7 @@ function closeModal(event) {
   if (event) {
     event.preventDefault();
   }
+  
   const addImgContainer = document.querySelector('.add-img');
 
   const imagePreview = addImgContainer.querySelector('img.photo-preview');
@@ -264,7 +266,7 @@ function closeModal(event) {
 
   const elementsToShow = addImgContainer.querySelectorAll('i, label, p');
   elementsToShow.forEach(element => {
-    element.style.display = null;
+    element.style.display = "null";
   });
 
   modal.style.display = 'none';
@@ -275,6 +277,7 @@ function closeModal(event) {
   modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
   modal = null;
   resetForm();
+  resetAddImgContainer();
 };
 
 // Fonction pour réinitialiser le formulaire d'ajout d'image
@@ -340,7 +343,13 @@ function handleSubmit() {
   var photoFile = document.getElementById("photo-file").files[0];
 
   // Vérifier si les champs sont remplis
+  var photoFile = document.getElementById("photo-file").files[0];
 
+  if (photoFile.size > 4 * 1024 * 1024) {
+    // Le fichier dépasse la limite de taille
+    console.error("La taille du fichier dépasse la limite de 4 Mo.");
+    return;
+  }
   // Créer un objet FormData pour envoyer les données du formulaire
   var formData = new FormData();
   formData.append("title", titre);
@@ -401,16 +410,63 @@ function checkForm() {
   var choix = document.getElementById("choix").value;
   var photoFile = document.getElementById("photo-file").files[0];
   var submitButton = document.querySelector("#submit-button");
+  var errorMessage = document.getElementById("error-message");
 
-  if (titre && choix && photoFile && choix !== "vide") {
-    // Champs remplis, le bouton est activé
-    submitButton.disabled = false;
-    submitButton.style.backgroundColor = "#1D6154";
-    submitButton.style.cursor = "pointer";
+  if (titre && choix && photoFile && choix !== "vide" && photoFile.size <= 4 * 1024 * 1024) {
+    if (isImageValid(photoFile)) {
+      // Champs remplis, taille du fichier respectée et extension valide, le bouton est activé
+      submitButton.disabled = false;
+      submitButton.style.backgroundColor = "#1D6154";
+      submitButton.style.cursor = "pointer";
+      
+      // Masquer le message d'erreur
+      errorMessage.style.display = "none";
+    } else {
+      // Extension de l'image non valide, le bouton est désactivé
+      submitButton.disabled = true;
+      submitButton.style.backgroundColor = "#808080";
+      submitButton.style.cursor = "not-allowed";
+      
+      // Afficher le message d'erreur
+      errorMessage.style.display = "block";
+    }
   } else {
-    // Au moins un champ est vide, le bouton est désactivé
+    // Au moins un champ est vide, la taille du fichier dépasse 4 Mo, ou l'extension de l'image n'est pas valide, le bouton est désactivé
     submitButton.disabled = true;
     submitButton.style.backgroundColor = "#A7A7A7";
     submitButton.style.cursor = "not-allowed";
+    
+    // Masquer le message d'erreur
+    errorMessage.style.display = "none";
   }
+}
+
+function isImageValid(file) {
+  const validExtensions = ['.jpg', '.png'];
+  const fileName = file.name.toLowerCase();
+  return validExtensions.some(ext => fileName.endsWith(ext));
+}
+
+document.querySelector(".js-modal-retour").addEventListener("click", hideErrorMessage);
+document.querySelector(".js-modal-close").addEventListener("click", hideErrorMessage);
+
+function hideErrorMessage() {
+  let errorMessage = document.getElementById("error-message");
+  errorMessage.style.display = "none";
+}
+
+function resetAddImgContainer() {
+  const addImgContainer = document.querySelector('.add-img');
+
+  // Supprimer l'image de prévisualisation
+  const imagePreview = addImgContainer.querySelector('img.photo-preview');
+  if (imagePreview) {
+    addImgContainer.removeChild(imagePreview);
+  }
+
+  // Réinitialiser l'affichage des éléments i, label et p
+  const elementsToShow = addImgContainer.querySelectorAll('i, label, p');
+  elementsToShow.forEach(element => {
+    element.style.display = null;
+  });
 }

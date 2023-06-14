@@ -76,11 +76,12 @@
 							<div class="add-img">
 								<i class="fa-regular fa-image icon-image"></i>
 								<label for="photo-file">+ Ajouter photo</label>
-								<input type="file" id="photo-file" accept="image/jpeg, image/png" style="display: none;">
+								<input type="file" id="photo-file" accept=".jpg, .png" style="display: none;">
 								<p>jpg, png : 4 Mo max</p>
 								<div class="preview-container">
 									<img id="photo-preview" src="" alt="Aperçu de l'image" style="display: none;">
 								</div>
+								<span id="error-message" class="paragraph-error" style="color: red; display: none;">L'image n'est pas au format JPG ou PNG.</span>
 							</div>
 							<div class="add-img-form">
 								<label for="titre">Titre</label>
@@ -94,7 +95,7 @@
 								</select>
 							</div>
 							<hr>
-							<button type="submit" id="submit-button" class="valid">Valider</button>
+							<button type="submit" id="submit-button" class="valid" disabled>Valider</button>
 						</form>
 					</div>
 				</aside>

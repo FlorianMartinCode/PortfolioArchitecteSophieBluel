@@ -409,6 +409,7 @@ footer nav ul li {
 .gallery-modal img {
 	width: 100%;
 	height: 127px;
+	object-fit: cover;
 }
 .gallery-modal i {
 	display: flex;

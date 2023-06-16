@@ -388,16 +388,25 @@ function handleSubmit() {
       // Afficher les œuvres mises à jour dans la galerie
       renderWorks(works);
 
-      closeModal(); // Ferme la modale d'ajout d'image
-
-      const galleryModal = document.getElementById("modal");
-      galleryModal.style.display = null; // Ouvre la modale principale
-
       // Réinitialiser l'état du bouton "Valider" à gris
       var submitButton = document.querySelector("#submit-button");
       submitButton.disabled = true;
       submitButton.classList.remove("button-active");
+
+      // Sélectionner le bouton "Retour" par sa classe
+      var retourButton = document.querySelector(".js-modal-retour");
+      retourButton.click(); // Simuler un clic sur le bouton "Retour"
+
+      // Fermer la modal lors d'un clic en dehors d'elle
+      document.addEventListener("click", function (event) {
+      var modal = document.querySelector(".js-modal");
+      if (!modal.contains(event.target)) {
+      // Clic en dehors de la modal
+      var closeButton = document.querySelector(".js-modal-close");
+      closeButton.dispatchEvent(new Event("click")); // Simuler un événement de clic sur le bouton de fermeture
+      }
     });
+  });
 }
 
 document.getElementById("titre").addEventListener("keyup", function () {

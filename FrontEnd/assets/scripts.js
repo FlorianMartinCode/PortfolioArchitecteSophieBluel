@@ -388,11 +388,6 @@ function handleSubmit() {
       // Afficher les œuvres mises à jour dans la galerie
       renderWorks(works);
 
-      // Réinitialiser l'état du bouton "Valider" à gris
-      var submitButton = document.querySelector("#submit-button");
-      submitButton.disabled = true;
-      submitButton.classList.remove("button-active");
-
       // Sélectionner le bouton "Retour" par sa classe
       var retourButton = document.querySelector(".js-modal-retour");
       retourButton.click(); // Simuler un clic sur le bouton "Retour"
@@ -405,8 +400,13 @@ function handleSubmit() {
       var closeButton = document.querySelector(".js-modal-close");
       closeButton.dispatchEvent(new Event("click")); // Simuler un événement de clic sur le bouton de fermeture
       }
+      });
+
+      // Réinitialiser l'état du bouton "Valider" à gris
+      var submitButton = document.querySelector("#submit-button");
+      submitButton.disabled = true;
+      submitButton.classList.remove("button-active");
     });
-  });
 }
 
 document.getElementById("titre").addEventListener("keyup", function () {

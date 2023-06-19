@@ -12,7 +12,6 @@ function renderWorks(works, categoryId = null) {
       return;
     }
 
-    // Crée les éléments HTML nécessaires pour afficher les œuvres
     const figureElement = document.createElement('figure');
     const imgElement = document.createElement('img');
     const figcaptionElement = document.createElement('figcaption');
@@ -63,7 +62,6 @@ const deleteWork = async (id) => {
   }
 };
 
-// Fonction pour supprimer l'ensemble de la galerie
 const deleteGallery = async () => {
   const works = await getWorks();
 
@@ -74,10 +72,8 @@ const deleteGallery = async () => {
   const updatedWorks = await getWorks();
   renderWorks(updatedWorks);
 };
-
 document.getElementById('delete-gallery').addEventListener('click', deleteGallery);
 
-// Fonction pour afficher les filtres de catégories
 function renderFilters(categories, works) {
   const optionTous = document.createElement('button');
   optionTous.value = 'tous';
@@ -104,7 +100,6 @@ function renderFilters(categories, works) {
   });
 }
 
-// Fonction pour activer le bouton de filtre sélectionné
 function setActiveButton(button) {
   const buttons = document.querySelectorAll('.filter-button');
   buttons.forEach(btn => {
@@ -144,7 +139,6 @@ var run = async() => {
 
 run();
 
-// Modifie login en logout
 const loginElement = document.getElementById('logout');
 if (localStorage.getItem('token')) {
   loginElement.textContent = 'logout';
@@ -152,7 +146,6 @@ if (localStorage.getItem('token')) {
   loginElement.textContent = 'login';
 }
 
-// Gestionnaire d'événement pour le clic sur le bouton de connexion/déconnexion
 loginElement.addEventListener('click', () => {
   if (localStorage.getItem('token')) {
     localStorage.removeItem('token');
@@ -160,7 +153,6 @@ loginElement.addEventListener('click', () => {
   }
 });
 
-// Affiche ou masque les éléments d'édition en fonction de la présence du token
 const editionDiv = document.querySelector('.edition');
 if (localStorage.getItem('token')) {
   editionDiv.style.display = 'flex';
@@ -168,7 +160,6 @@ if (localStorage.getItem('token')) {
   editionDiv.style.display = 'none';
 }
 
-// Affiche ou masque le conteneur de filtres en fonction de la présence du token
 const filterContainer = document.getElementById('filter-container');
 if (localStorage.getItem('token')) {
   filterContainer.style.display = 'none';
@@ -176,7 +167,6 @@ if (localStorage.getItem('token')) {
   filterContainer.style.display = 'flex';
 }
 
-// Affiche ou masque les éléments de modification en fonction de la présence du token
 const modifDivs = document.querySelectorAll('.modif');
 if (localStorage.getItem('token')) {
   modifDivs.forEach(div => {
@@ -192,7 +182,6 @@ if (localStorage.getItem('token')) {
 let modal = null;
 let addModal;
 
-// Fonction pour ouvrir la modale au clic sur un lien
 const openModal = function (e) {
   e.preventDefault();
   modal = document.querySelector(e.target.getAttribute('href'));
@@ -204,7 +193,6 @@ const openModal = function (e) {
   modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 };
 
-// Fonction pour ouvrir la modale d'ajout d'image
 const openAddModal = function (e) {
   e.preventDefault();
   const addModal = document.getElementById('add-modal');
@@ -218,11 +206,8 @@ const openAddModal = function (e) {
   modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
   modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 };
-
-// Gestionnaire d'événement pour le clic sur le lien d'ajout d'image
 document.querySelector('.ajt-photo a').addEventListener('click', openAddModal);
 
-// Fonction pour revenir à la modale principale depuis la modale d'ajout d'image
 const retourModal = function (e) {
   e.preventDefault();
   const galleryModal = document.getElementById('modal');
@@ -247,11 +232,9 @@ const retourModal = function (e) {
   resetForm();
 };
 
-// Gestionnaire d'événement pour le clic sur le bouton "Retour" dans la modale d'ajout d'image
 const retourButton = document.querySelector('.js-modal-retour');
 retourButton.addEventListener('click', retourModal);
 
-// Fonction pour fermer la modale
 function closeModal(event) {
   if (event) {
     event.preventDefault();
@@ -280,12 +263,10 @@ function closeModal(event) {
   resetAddImgContainer();
 };
 
-// Fonction pour réinitialiser le formulaire d'ajout d'image
 function resetForm() {
   const form = document.getElementById('add-form');
   form.reset();
 
-  // Réinitialise la sélection de la catégorie
   const selectElement = document.getElementById('choix');
   selectElement.value = 'vide';
 }
@@ -295,24 +276,20 @@ window.addEventListener('load', function() {
   addModal = document.getElementById('add-modal');
 });
 
-// Gestionnaire d'événement pour ouvrir la modale au clic sur les liens
 document.querySelectorAll('.js-modal').forEach(a => {
   a.addEventListener('click', openModal)
 });
 
-// Fonction pour arrêter la propagation de l'événement
 const stopPropagation = function (e) {
   e.stopPropagation();
 };
 
-// Gestionnaire d'événement pour la touche Escape pour fermer la modale
 window.addEventListener('keydown', function (e) {
   if (e.key === "Escape" || e.key === "Esc") {
     closeModal(e);
   }
 });
 
-// Gestionnaire d'événement pour la sélection d'un fichier dans le formulaire d'ajout d'image
 const addImgContainer = document.querySelector('.add-img');
 const photoFileInput = document.getElementById('photo-file');
 
@@ -346,7 +323,6 @@ function handleSubmit() {
   var photoFile = document.getElementById("photo-file").files[0];
 
   if (photoFile.size > 4 * 1024 * 1024) {
-    // Le fichier dépasse la limite de taille
     console.error("La taille du fichier dépasse la limite de 4 Mo.");
     return;
   }
@@ -371,11 +347,9 @@ function handleSubmit() {
   })
     .then(function (response) {
       if (response.status === 201) {
-        // La requête a été traitée avec succès
         console.log("Nouvelle œuvre envoyée avec succès !");
         return response.json(); // Récupérer les données renvoyées par le serveur
       } else {
-        // Gérer les erreurs de la requête
         console.error(
           "Erreur lors de l'envoi de l'œuvre. Statut de la réponse :",
           response.status
@@ -388,7 +362,6 @@ function handleSubmit() {
       // Afficher les œuvres mises à jour dans la galerie
       renderWorks(works);
 
-      // Sélectionner le bouton "Retour" par sa classe
       var retourButton = document.querySelector(".js-modal-retour");
       retourButton.click(); // Simuler un clic sur le bouton "Retour"
 
@@ -402,7 +375,7 @@ function handleSubmit() {
       }
       });
 
-      // Réinitialiser l'état du bouton "Valider" à gris
+      // Réinitialise l'état du bouton "Valider" à gris
       var submitButton = document.querySelector("#submit-button");
       submitButton.disabled = true;
       submitButton.classList.remove("button-active");
@@ -429,27 +402,21 @@ function checkForm() {
   if (titre && choix && photoFile && choix !== "vide") {
     if (photoFile.size <= 4 * 1024 * 1024) {
       if (isImageValid(photoFile)) {
-        // Champs remplis, taille du fichier respectée et extension valide, le bouton est activé
         submitButton.disabled = false;
         submitButton.classList.add("button-active");
 
-        // Masquer le message d'erreur
         errorMessage.style.display = "none";
       } else {
-        // Extension de l'image non valide, le bouton est désactivé
         submitButton.disabled = true;
         submitButton.classList.remove("button-active");
 
-        // Afficher le message d'erreur
         errorMessage.textContent = "L'image n'est pas au format JPG ou PNG.";
         errorMessage.style.display = "block";
       }
     } else {
-      // La taille du fichier dépasse 4 Mo, le bouton est désactivé
       submitButton.disabled = true;
       submitButton.classList.remove("button-active");
 
-      // Afficher le message d'erreur
       errorMessage.textContent = "La taille de l'image dépasse 4 Mo.";
       errorMessage.style.display = "block";
     }
@@ -458,7 +425,6 @@ function checkForm() {
     submitButton.disabled = true;
     submitButton.classList.remove("button-active");
 
-    // Masquer le message d'erreur
     errorMessage.style.display = "none";
   }
 }
